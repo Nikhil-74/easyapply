@@ -1,0 +1,375 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.email:easyapply >-------------------------
+[INFO] Building easyapply 0.1
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.3.0:tree (default-cli) @ easyapply ---
+Downloading from central: https://repo.maven.apache.org/maven2/org/osgi/org.osgi.core/4.3.1/org.osgi.core-4.3.1.pom
+Progress (1): 1.4 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/osgi/org.osgi.core/4.3.1/org.osgi.core-4.3.1.pom (1.4 kB at 1.8 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.pom
+Progress (1): 2.0 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.pom (2.0 kB at 12 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.pom
+Progress (1): 2.3 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.pom (2.3 kB at 17 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/com/google/code/findbugs/findbugs-annotations/3.0.1/findbugs-annotations-3.0.1.pom
+Progress (1): 4.1 kBProgress (1): 6.2 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/com/google/code/findbugs/findbugs-annotations/3.0.1/findbugs-annotations-3.0.1.pom (6.2 kB at 41 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/graalvm/nativeimage/svm/19.3.6/svm-19.3.6.pom
+Progress (1): 2.7 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/graalvm/nativeimage/svm/19.3.6/svm-19.3.6.pom (2.7 kB at 18 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/jetbrains/annotations-java5/23.0.0/annotations-java5-23.0.0.pom
+Progress (1): 1.4 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/jetbrains/annotations-java5/23.0.0/annotations-java5-23.0.0.pom (1.4 kB at 9.7 kB/s)
+[INFO] com.email:easyapply:jar:0.1
+[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:2.7.18:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.7.18:compile (version managed from 2.7.18; scope not updated to compile)
+[INFO] |  |  +- (org.springframework.boot:spring-boot:jar:2.7.18:compile - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  |  +- (org.springframework.boot:spring-boot-autoconfigure:jar:2.7.18:compile - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.18:compile (version managed from 2.7.18)
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.12:compile (version managed from 1.2.12)
+[INFO] |  |  |  |  +- ch.qos.logback:logback-core:jar:1.2.12:compile (version managed from 1.2.12)
+[INFO] |  |  |  |  \- (org.slf4j:slf4j-api:jar:1.7.36:compile - version managed from 1.7.32; omitted for duplicate)
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile (version managed from 2.17.2)
+[INFO] |  |  |  |  +- (org.slf4j:slf4j-api:jar:1.7.36:compile - version managed from 1.7.35; omitted for duplicate)
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile (version managed from 2.17.2)
+[INFO] |  |  |  |     \- org.osgi:org.osgi.core:jar:4.3.1:provided
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile (version managed from 1.7.36)
+[INFO] |  |  |     \- (org.slf4j:slf4j-api:jar:1.7.36:compile - version managed from 1.7.36; omitted for duplicate)
+[INFO] |  |  +- (jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile - version managed from 1.3.5; omitted for duplicate)
+[INFO] |  |  +- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.30:compile (version managed from 1.30)
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.18:compile (version managed from 2.7.18)
+[INFO] |  |  +- (org.springframework.boot:spring-boot-starter:jar:2.7.18:compile - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  |  +- (org.springframework:spring-web:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  |  +- (com.fasterxml.jackson.core:jackson-databind:jar:2.13.5:compile - version managed from 2.13.5; omitted for duplicate)
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.5:compile (version managed from 2.13.5)
+[INFO] |  |  |  +- (com.fasterxml.jackson.core:jackson-core:jar:2.13.5:compile - version managed from 2.13.5; omitted for duplicate)
+[INFO] |  |  |  \- (com.fasterxml.jackson.core:jackson-databind:jar:2.13.5:compile - version managed from 2.13.5; omitted for duplicate)
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.5:compile (version managed from 2.13.5)
+[INFO] |  |  |  +- (com.fasterxml.jackson.core:jackson-annotations:jar:2.13.5:compile - version managed from 2.13.5; omitted for duplicate)
+[INFO] |  |  |  +- (com.fasterxml.jackson.core:jackson-core:jar:2.13.5:compile - version managed from 2.13.5; omitted for duplicate)
+[INFO] |  |  |  \- (com.fasterxml.jackson.core:jackson-databind:jar:2.13.5:compile - version managed from 2.13.5; omitted for duplicate)
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.5:compile (version managed from 2.13.5)
+[INFO] |  |     +- (com.fasterxml.jackson.core:jackson-core:jar:2.13.5:compile - version managed from 2.13.5; omitted for duplicate)
+[INFO] |  |     \- (com.fasterxml.jackson.core:jackson-databind:jar:2.13.5:compile - version managed from 2.13.5; omitted for duplicate)
+[INFO] |  +- (org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.18:compile - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  +- org.springframework:spring-web:jar:5.3.31:compile (version managed from 5.3.31)
+[INFO] |  |  +- org.springframework:spring-beans:jar:5.3.31:compile (version managed from 5.3.31)
+[INFO] |  |  |  \- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  |  \- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  \- org.springframework:spring-webmvc:jar:5.3.31:compile (version managed from 5.3.31)
+[INFO] |     +- org.springframework:spring-aop:jar:5.3.31:compile (version managed from 5.3.31)
+[INFO] |     |  +- (org.springframework:spring-beans:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     |  \- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     +- (org.springframework:spring-beans:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     +- org.springframework:spring-context:jar:5.3.31:compile (version managed from 5.3.31)
+[INFO] |     |  +- (org.springframework:spring-aop:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     |  +- (org.springframework:spring-beans:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     |  +- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     |  \- (org.springframework:spring-expression:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     +- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     +- org.springframework:spring-expression:jar:5.3.31:compile (version managed from 5.3.31)
+[INFO] |     |  \- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |     \- (org.springframework:spring-web:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] +- org.springframework.boot:spring-boot-starter-mail:jar:2.7.18:compile
+[INFO] |  +- (org.springframework.boot:spring-boot-starter:jar:2.7.18:compile - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  +- org.springframework:spring-context-support:jar:5.3.31:compile (version managed from 5.3.31)
+[INFO] |  |  +- (org.springframework:spring-beans:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  |  +- (org.springframework:spring-context:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  |  \- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  \- com.sun.mail:jakarta.mail:jar:1.6.7:compile (version managed from 1.6.7)
+[INFO] |     \- com.sun.activation:jakarta.activation:jar:1.2.2:compile (version managed from 1.2.1)
+[INFO] +- org.springframework.boot:spring-boot-devtools:jar:2.7.18:runtime
+[INFO] |  +- org.springframework.boot:spring-boot:jar:2.7.18:compile (version managed from 2.7.18; scope not updated to compile)
+[INFO] |  |  +- (org.springframework:spring-core:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  |  \- (org.springframework:spring-context:jar:5.3.31:compile - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  \- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.18:compile (version managed from 2.7.18; scope not updated to compile)
+[INFO] |     \- (org.springframework.boot:spring-boot:jar:2.7.18:compile - version managed from 2.7.18; omitted for duplicate)
+[INFO] +- org.projectlombok:lombok:jar:1.18.30:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.18:provided (scope not updated to compile)
+[INFO] |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile (version managed from 1.3.5; scope not updated to compile)
+[INFO] |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.83:provided (version managed from 9.0.83)
+[INFO] |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.83:provided (version managed from 9.0.83)
+[INFO] |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.83:provided (version managed from 9.0.83)
+[INFO] |     \- (org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.83:provided - version managed from 9.0.83; omitted for duplicate)
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:2.7.18:test
+[INFO] |  +- (org.springframework.boot:spring-boot-starter:jar:2.7.18:test - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  +- org.springframework.boot:spring-boot-test:jar:2.7.18:test (version managed from 2.7.18)
+[INFO] |  |  \- (org.springframework.boot:spring-boot:jar:2.7.18:test - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.18:test (version managed from 2.7.18)
+[INFO] |  |  +- (org.springframework.boot:spring-boot:jar:2.7.18:test - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  |  +- (org.springframework.boot:spring-boot-test:jar:2.7.18:test - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  |  \- (org.springframework.boot:spring-boot-autoconfigure:jar:2.7.18:test - version managed from 2.7.18; omitted for duplicate)
+[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.7.0:test (version managed from 2.7.0)
+[INFO] |  |  +- net.minidev:json-smart:jar:2.4.11:test (version managed from 2.4.7)
+[INFO] |  |  |  \- net.minidev:accessors-smart:jar:2.4.11:test
+[INFO] |  |  |     \- org.ow2.asm:asm:jar:9.3:test
+[INFO] |  |  \- org.slf4j:slf4j-api:jar:1.7.36:compile (version managed from 1.7.33; scope not updated to compile)
+[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:test (version managed from 2.3.3)
+[INFO] |  |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:test (version managed from 1.2.2)
+[INFO] |  +- org.assertj:assertj-core:jar:3.22.0:test (version managed from 3.22.0)
+[INFO] |  +- org.hamcrest:hamcrest:jar:2.2:test (version managed from 2.2)
+[INFO] |  +- org.junit.jupiter:junit-jupiter:jar:5.8.2:test (version managed from 5.8.2)
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test (version managed from 5.8.2)
+[INFO] |  |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  |  |  +- org.junit.platform:junit-platform-commons:jar:1.8.2:test (version managed from 1.8.2)
+[INFO] |  |  |  |  \- (org.apiguardian:apiguardian-api:jar:1.1.2:test - omitted for duplicate)
+[INFO] |  |  |  \- org.apiguardian:apiguardian-api:jar:1.1.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test (version managed from 5.8.2)
+[INFO] |  |  |  +- (org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test - version managed from 5.8.2; omitted for duplicate)
+[INFO] |  |  |  \- (org.apiguardian:apiguardian-api:jar:1.1.2:test - omitted for duplicate)
+[INFO] |  |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test (version managed from 5.8.2)
+[INFO] |  |     +- org.junit.platform:junit-platform-engine:jar:1.8.2:test (version managed from 1.8.2)
+[INFO] |  |     |  +- (org.opentest4j:opentest4j:jar:1.2.0:test - omitted for duplicate)
+[INFO] |  |     |  +- (org.junit.platform:junit-platform-commons:jar:1.8.2:test - version managed from 1.8.2; omitted for duplicate)
+[INFO] |  |     |  \- (org.apiguardian:apiguardian-api:jar:1.1.2:test - omitted for duplicate)
+[INFO] |  |     +- (org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test - version managed from 5.8.2; omitted for duplicate)
+[INFO] |  |     \- (org.apiguardian:apiguardian-api:jar:1.1.2:test - omitted for duplicate)
+[INFO] |  +- org.mockito:mockito-core:jar:4.5.1:test (version managed from 4.5.1)
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.12.23:compile (version managed from 1.12.9; scope not updated to compile)
+[INFO] |  |  |  +- net.java.dev.jna:jna:jar:5.12.1:provided (scope not updated to provided)
+[INFO] |  |  |  +- net.java.dev.jna:jna-platform:jar:5.12.1:provided (scope not updated to provided)
+[INFO] |  |  |  |  \- (net.java.dev.jna:jna:jar:5.12.1:provided - omitted for duplicate)
+[INFO] |  |  |  +- com.google.code.findbugs:findbugs-annotations:jar:3.0.1:provided (scope not updated to provided)
+[INFO] |  |  |  \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.23:test (version managed from 1.12.9)
+[INFO] |  |  |  +- (net.java.dev.jna:jna:jar:5.12.1:test - omitted for duplicate)
+[INFO] |  |  |  +- (net.java.dev.jna:jna-platform:jar:5.12.1:test - omitted for duplicate)
+[INFO] |  |  |  +- (com.google.code.findbugs:findbugs-annotations:jar:3.0.1:test - omitted for duplicate)
+[INFO] |  |  |  \- (com.google.code.findbugs:jsr305:jar:3.0.2:test - omitted for duplicate)
+[INFO] |  |  \- org.objenesis:objenesis:jar:3.2:test
+[INFO] |  +- org.mockito:mockito-junit-jupiter:jar:4.5.1:test (version managed from 4.5.1)
+[INFO] |  |  +- (org.mockito:mockito-core:jar:4.5.1:test - version managed from 4.5.1; omitted for duplicate)
+[INFO] |  |  \- (org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test - version managed from 5.8.2; omitted for duplicate)
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.1:test (version managed from 1.5.1)
+[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO] |  +- org.springframework:spring-core:jar:5.3.31:compile (version managed from 5.3.31; scope not updated to compile)
+[INFO] |  |  \- org.springframework:spring-jcl:jar:5.3.31:compile (version managed from 5.3.31)
+[INFO] |  +- org.springframework:spring-test:jar:5.3.31:test (version managed from 5.3.31)
+[INFO] |  |  \- (org.springframework:spring-core:jar:5.3.31:test - version managed from 5.3.31; omitted for duplicate)
+[INFO] |  \- org.xmlunit:xmlunit-core:jar:2.9.1:test (version managed from 2.9.1)
+[INFO] |     \- (jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:test - version managed from 2.3.3; omitted for duplicate)
+[INFO] +- org.seleniumhq.selenium:selenium-java:jar:4.33.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile (version managed from 4.33.0)
+[INFO] |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:4.1.4:compile (version managed from 4.33.0)
+[INFO] |  |  +- com.google.auto.service:auto-service-annotations:jar:1.0.1:compile
+[INFO] |  |  +- com.google.auto.service:auto-service:jar:1.0.1:compile
+[INFO] |  |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  |  +- com.google.auto:auto-common:jar:1.2:compile
+[INFO] |  |  |  |  \- (com.google.guava:guava:jar:31.0.1-jre:compile - omitted for conflict with 31.1-jre)
+[INFO] |  |  |  \- (com.google.guava:guava:jar:31.0.1-jre:compile - omitted for conflict with 31.1-jre)
+[INFO] |  |  +- com.google.guava:guava:jar:31.1-jre:compile
+[INFO] |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  |  +- (com.google.code.findbugs:jsr305:jar:3.0.2:compile - omitted for duplicate)
+[INFO] |  |  |  +- org.checkerframework:checker-qual:jar:3.12.0:compile
+[INFO] |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.11.0:compile
+[INFO] |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-chromium-driver:jar:4.1.4:compile (version managed from 4.1.4)
+[INFO] |  |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  |  +- (com.google.auto.service:auto-service:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  |  +- (com.google.guava:guava:jar:31.1-jre:compile - omitted for duplicate)
+[INFO] |  |  |  +- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile (version managed from 4.1.4)
+[INFO] |  |  |  \- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  +- org.seleniumhq.selenium:selenium-devtools-v135:jar:4.33.0:compile
+[INFO] |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.1.1:runtime - omitted for conflict with 1.0.1)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  +- org.seleniumhq.selenium:selenium-devtools-v136:jar:4.33.0:compile
+[INFO] |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.1.1:runtime - omitted for conflict with 1.0.1)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  +- org.seleniumhq.selenium:selenium-devtools-v137:jar:4.33.0:compile
+[INFO] |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.1.1:runtime - omitted for conflict with 1.0.1)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.33.0; omitted for duplicate)
+[INFO] |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:4.1.4:compile (version managed from 4.33.0)
+[INFO] |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.auto.service:auto-service:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.guava:guava:jar:31.1-jre:compile - omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-chromium-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:4.1.4:compile (version managed from 4.33.0)
+[INFO] |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.auto.service:auto-service:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.guava:guava:jar:31.1-jre:compile - omitted for duplicate)
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-devtools-v85:jar:4.1.4:compile (version managed from 4.1.4)
+[INFO] |  |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  |  +- (com.google.auto.service:auto-service:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  |  +- (com.google.guava:guava:jar:31.1-jre:compile - omitted for duplicate)
+[INFO] |  |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  |  +- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:4.1.4:compile (version managed from 4.33.0)
+[INFO] |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.auto.service:auto-service:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile (version managed from 4.33.0)
+[INFO] |  |  +- com.beust:jcommander:jar:1.82:compile
+[INFO] |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.auto.service:auto-service:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.guava:guava:jar:31.1-jre:compile - omitted for duplicate)
+[INFO] |  |  +- io.netty:netty-buffer:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  \- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  +- io.netty:netty-codec-http:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- io.netty:netty-codec:jar:4.1.101.Final:compile (version managed from 4.1.101.Final)
+[INFO] |  |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  \- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  \- io.netty:netty-handler:jar:4.1.101.Final:compile (version managed from 4.1.101.Final)
+[INFO] |  |  |     +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |     +- (io.netty:netty-resolver:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |     +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |     +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |     +- (io.netty:netty-transport-native-unix-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |     \- (io.netty:netty-codec:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  +- io.netty:netty-common:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  +- org.graalvm.nativeimage:svm:jar:19.3.6:provided
+[INFO] |  |  |  \- org.jetbrains:annotations-java5:jar:23.0.0:provided
+[INFO] |  |  +- io.netty:netty-transport-classes-epoll:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  \- (io.netty:netty-transport-native-unix-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  +- io.netty:netty-transport-classes-kqueue:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  \- (io.netty:netty-transport-native-unix-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  +- io.netty:netty-transport-native-epoll:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-transport-native-unix-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  \- (io.netty:netty-transport-classes-epoll:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  +- io.netty:netty-transport-native-kqueue:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-transport-native-unix-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  \- (io.netty:netty-transport-classes-kqueue:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  +- io.netty:netty-transport-native-unix-common:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  \- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  +- io.netty:netty-transport:jar:4.1.101.Final:compile (version managed from 4.1.76.Final)
+[INFO] |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  \- io.netty:netty-resolver:jar:4.1.101.Final:compile (version managed from 4.1.101.Final)
+[INFO] |  |  |     \- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  +- io.opentelemetry:opentelemetry-api:jar:1.13.0:compile
+[INFO] |  |  |  \- (io.opentelemetry:opentelemetry-context:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  +- io.opentelemetry:opentelemetry-context:jar:1.13.0:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-exporter-logging:jar:1.13.0:compile
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  +- io.opentelemetry:opentelemetry-sdk-metrics:jar:1.13.0-alpha:compile (scope not updated to compile)
+[INFO] |  |  |  |  +- (io.opentelemetry:opentelemetry-api:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  |  \- (io.opentelemetry:opentelemetry-sdk-common:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  \- io.opentelemetry:opentelemetry-sdk-logs:jar:1.13.0-alpha:compile (scope not updated to compile)
+[INFO] |  |  |     \- (io.opentelemetry:opentelemetry-sdk-common:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk-common:jar:1.13.0:compile
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-api:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  \- (io.opentelemetry:opentelemetry-semconv:jar:1.13.0-alpha:runtime - omitted for duplicate)
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:jar:1.13.0:compile
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk-metrics:jar:1.13.0-alpha:runtime - omitted for duplicate)
+[INFO] |  |  |  \- (io.opentelemetry:opentelemetry-sdk-logs:jar:1.13.0-alpha:runtime - omitted for duplicate)
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:jar:1.13.0-alpha:compile
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk-metrics:jar:1.13.0-alpha:compile - omitted for duplicate)
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk-logs:jar:1.13.0-alpha:compile - omitted for duplicate)
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  \- (io.opentelemetry:opentelemetry-semconv:jar:1.13.0-alpha:runtime - omitted for duplicate)
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk-trace:jar:1.13.0:compile
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-api:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk-common:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  \- (io.opentelemetry:opentelemetry-semconv:jar:1.13.0-alpha:runtime - omitted for duplicate)
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk:jar:1.13.0:compile
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-api:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk-common:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk-trace:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  |  +- (io.opentelemetry:opentelemetry-sdk-metrics:jar:1.13.0-alpha:runtime - omitted for duplicate)
+[INFO] |  |  |  \- (io.opentelemetry:opentelemetry-sdk-logs:jar:1.13.0-alpha:runtime - omitted for duplicate)
+[INFO] |  |  +- io.opentelemetry:opentelemetry-semconv:jar:1.13.0-alpha:compile
+[INFO] |  |  |  \- (io.opentelemetry:opentelemetry-api:jar:1.13.0:compile - omitted for duplicate)
+[INFO] |  |  +- io.ous:jtoml:jar:2.0.0:compile
+[INFO] |  |  +- (net.bytebuddy:byte-buddy:jar:1.12.23:compile - version managed from 1.12.9; omitted for duplicate)
+[INFO] |  |  +- org.apache.commons:commons-exec:jar:1.3:compile
+[INFO] |  |  +- org.asynchttpclient:async-http-client:jar:2.12.3:compile
+[INFO] |  |  |  +- org.asynchttpclient:async-http-client-netty-utils:jar:2.12.3:compile
+[INFO] |  |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.60.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (org.slf4j:slf4j-api:jar:1.7.36:compile - version managed from 1.7.30; omitted for duplicate)
+[INFO] |  |  |  |  \- (com.sun.activation:jakarta.activation:jar:1.2.2:compile - version managed from 1.2.2; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-codec-http:jar:4.1.101.Final:compile - version managed from 4.1.60.Final; omitted for duplicate)
+[INFO] |  |  |  +- (io.netty:netty-handler:jar:4.1.101.Final:compile - version managed from 4.1.60.Final; omitted for duplicate)
+[INFO] |  |  |  +- io.netty:netty-codec-socks:jar:4.1.101.Final:compile (version managed from 4.1.60.Final)
+[INFO] |  |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  \- (io.netty:netty-codec:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- io.netty:netty-handler-proxy:jar:4.1.101.Final:compile (version managed from 4.1.60.Final)
+[INFO] |  |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-codec:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-codec-socks:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  \- (io.netty:netty-codec-http:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.101.Final:compile (version managed from 4.1.60.Final)
+[INFO] |  |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-transport-native-unix-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  \- (io.netty:netty-transport-classes-epoll:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.101.Final:compile (version managed from 4.1.60.Final)
+[INFO] |  |  |  |  +- (io.netty:netty-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-buffer:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-transport:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  +- (io.netty:netty-transport-native-unix-common:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  |  \- (io.netty:netty-transport-classes-kqueue:jar:4.1.101.Final:compile - version managed from 4.1.101.Final; omitted for duplicate)
+[INFO] |  |  |  +- org.reactivestreams:reactive-streams:jar:1.0.4:compile (version managed from 1.0.3)
+[INFO] |  |  |  +- com.typesafe.netty:netty-reactive-streams:jar:2.0.4:compile
+[INFO] |  |  |  |  +- (io.netty:netty-handler:jar:4.1.101.Final:compile - version managed from 4.1.43.Final; omitted for duplicate)
+[INFO] |  |  |  |  \- (org.reactivestreams:reactive-streams:jar:1.0.4:compile - version managed from 1.0.3; omitted for duplicate)
+[INFO] |  |  |  +- (org.slf4j:slf4j-api:jar:1.7.36:compile - version managed from 1.7.30; omitted for duplicate)
+[INFO] |  |  |  \- (com.sun.activation:jakarta.activation:jar:1.2.2:compile - version managed from 1.2.2; omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-http:jar:4.1.4:compile (version managed from 4.1.4)
+[INFO] |  |  |  +- (com.google.guava:guava:jar:31.1-jre:compile - omitted for duplicate)
+[INFO] |  |  |  +- dev.failsafe:failsafe:jar:3.2.3:compile
+[INFO] |  |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  |  \- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:4.1.4:compile (version managed from 4.33.0)
+[INFO] |  |  +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.auto.service:auto-service:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.guava:guava:jar:31.1-jre:compile - omitted for duplicate)
+[INFO] |  |  +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  |  \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |  \- org.seleniumhq.selenium:selenium-support:jar:4.1.4:compile (version managed from 4.33.0)
+[INFO] |     +- (com.google.auto.service:auto-service-annotations:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |     +- (com.google.auto.service:auto-service:jar:1.0.1:compile - omitted for duplicate)
+[INFO] |     +- (com.google.guava:guava:jar:31.1-jre:compile - omitted for duplicate)
+[INFO] |     +- (net.bytebuddy:byte-buddy:jar:1.12.23:compile - version managed from 1.12.9; omitted for duplicate)
+[INFO] |     +- (org.seleniumhq.selenium:selenium-api:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |     +- (org.seleniumhq.selenium:selenium-json:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] |     \- (org.seleniumhq.selenium:selenium-remote-driver:jar:4.1.4:compile - version managed from 4.1.4; omitted for duplicate)
+[INFO] \- com.fasterxml.jackson.core:jackson-databind:jar:2.13.5:compile
+[INFO]    +- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.5:compile (version managed from 2.13.5)
+[INFO]    \- com.fasterxml.jackson.core:jackson-core:jar:2.13.5:compile (version managed from 2.13.5)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.750 s
+[INFO] Finished at: 2026-06-03T12:56:28+05:30
+[INFO] ------------------------------------------------------------------------

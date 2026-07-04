@@ -67,7 +67,7 @@ public class EmailServiceImpl implements EmailService {
 		Path resumePath = resourcePathResolver.resolveExternalPath(userProperties.getResumePath());
 		AtomicInteger successCount = new AtomicInteger();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(5);
+		ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 		List<Future<?>> futures = new ArrayList<>();
 
 		for (String[] detail : recipientDetails) {

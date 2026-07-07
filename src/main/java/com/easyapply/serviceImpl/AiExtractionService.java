@@ -1,4 +1,4 @@
-package com.easyapply.service;
+package com.easyapply.serviceImpl;
 
 import java.util.Locale;
 import java.util.regex.Matcher;

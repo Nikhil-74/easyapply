@@ -16,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.easyapply.dto.SentEmailHistoryItem;
 import com.easyapply.dto.UserProfileSettings;
 import com.easyapply.dto.UserProfileSettingsUpdate;
-import com.easyapply.service.SentEmailLogService;
-import com.easyapply.service.UserProfileSettingsService;
+import com.easyapply.serviceImpl.SentEmailLogService;
+import com.easyapply.serviceImpl.UserProfileSettingsService;
 
 @RestController
 @RequestMapping("/api/profile")

@@ -1,4 +1,4 @@
-package com.easyapply.service;
+package com.easyapply.serviceImpl;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

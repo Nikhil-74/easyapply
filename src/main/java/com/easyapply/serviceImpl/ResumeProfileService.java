@@ -1,4 +1,4 @@
-package com.easyapply.service;
+package com.easyapply.serviceImpl;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import com.easyapply.config.AiProperties;
 import com.easyapply.exception.ResumeReadException;
 import com.easyapply.model.ResumeProfile;
 import com.easyapply.reader.ResumeReader;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ResumeProfileService {
@@ -41,19 +40,13 @@ public class ResumeProfileService {
 	private final ResumeReader resumeReader;
 	private final ChatClient chatClient;
 	private final AiProperties aiProperties;
-	private final ObjectMapper objectMapper;
 
 	private volatile ResumeProfile cachedProfile;
 
-	public ResumeProfileService(
-			ResumeReader resumeReader,
-			ChatClient.Builder builder,
-			AiProperties aiProperties,
-			ObjectMapper objectMapper) {
+	public ResumeProfileService(ResumeReader resumeReader, ChatClient.Builder builder, AiProperties aiProperties) {
 		this.resumeReader = resumeReader;
 		this.chatClient = builder.build();
 		this.aiProperties = aiProperties;
-		this.objectMapper = objectMapper;
 	}
 
 	@Async
@@ -87,13 +80,13 @@ public class ResumeProfileService {
 				""".formatted(truncated);
 
 		try {
-			String rawResponse = chatClient.prompt()
-					.system(SYSTEM_PROMPT)
-					.user(userPrompt)
-					.call()
-					.content();
+			long start = System.currentTimeMillis();
 
-			ResumeProfile profile = objectMapper.readValue(extractJson(rawResponse), ResumeProfile.class);
+			ResumeProfile profile = chatClient.prompt().system(SYSTEM_PROMPT).user(userPrompt).call()
+					.entity(ResumeProfile.class);
+
+			System.err.println(System.currentTimeMillis() - start);
+
 			normalize(profile);
 			return profile;
 		} catch (Exception ex) {
@@ -103,28 +96,11 @@ public class ResumeProfileService {
 
 	private void normalize(ResumeProfile profile) {
 		if (profile.getSkills() != null) {
-			profile.setSkills(profile.getSkills().stream()
-					.filter(skill -> skill != null && !skill.isBlank())
-					.map(String::trim)
-					.distinct()
-					.toList());
+			profile.setSkills(profile.getSkills().stream().filter(skill -> skill != null && !skill.isBlank())
+					.map(String::trim).distinct().toList());
 		} else {
 			profile.setSkills(List.of());
 		}
-	}
-
-	private String extractJson(String content) {
-		String trimmed = content.trim();
-		if (trimmed.startsWith("```")) {
-			trimmed = trimmed.replaceAll("(?s)^```(?:json)?\\s*", "");
-			trimmed = trimmed.replaceAll("```\\s*$", "").trim();
-		}
-		int start = trimmed.indexOf('{');
-		int end = trimmed.lastIndexOf('}');
-		if (start >= 0 && end > start) {
-			return trimmed.substring(start, end + 1);
-		}
-		return trimmed;
 	}
 
 	private String truncate(String text) {

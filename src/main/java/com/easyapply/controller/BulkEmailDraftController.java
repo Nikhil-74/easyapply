@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.easyapply.dto.BulkEmailDraft;
 import com.easyapply.dto.BulkEmailDraftUpdate;
-import com.easyapply.service.BulkEmailDraftService;
+import com.easyapply.serviceImpl.BulkEmailDraftService;
 
 @RestController
 @RequestMapping("/api/emails/bulk-draft")

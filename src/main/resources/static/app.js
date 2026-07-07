@@ -1,5 +1,4 @@
 const endpoints = {
-	jobs: "/api/linkedin/jobs",
 	matches: "/api/linkedin/jobs/matched",
 	profile: "/api/linkedin/resume/profile",
 	sendBulk: "/api/emails/send",
@@ -55,7 +54,6 @@ document.querySelector("#load-profile-btn").addEventListener("click", loadProfil
 document.querySelector("#save-profile-settings-btn").addEventListener("click", saveProfileSettings);
 document.querySelector("#upload-resume-btn").addEventListener("click", uploadResume);
 document.querySelector("#refresh-sent-history-btn").addEventListener("click", loadSentHistory);
-document.querySelector("#load-jobs-btn").addEventListener("click", loadJobs);
 document.querySelector("#load-matches-btn").addEventListener("click", loadMatches);
 document.querySelector("#send-bulk-btn").addEventListener("click", openBulkModal);
 document.querySelector("#send-shortlisted-btn").addEventListener("click", sendShortlistedJobs);
@@ -173,31 +171,6 @@ async function uploadResume() {
 		elements.resumeUpload.value = "";
 		renderProfileSettings(settings);
 		logActivity(`Uploaded resume ${settings.resume?.fileName || file.name}.`);
-	});
-}
-
-async function loadJobs() {
-	await withBusy("Fetching jobs", async () => {
-		const progress = startProcessConsole("Fetching jobs", [
-			"Opening LinkedIn search with the configured browser session.",
-			"Scrolling the feed and collecting recent posts.",
-			"Reading visible post text and checking for recruiter emails.",
-			"Extracting structured job details from each useful post.",
-			"Skipping jobs already emailed in the recent send history.",
-			"Preparing fetched jobs for review."
-		]);
-		elements.jobsState.classList.remove("hidden");
-		elements.jobsState.innerHTML = "<strong>Fetching LinkedIn jobs...</strong><span>This can take a bit while Selenium scrolls and extracts posts.</span>";
-		try {
-			state.jobs = await requestJson(endpoints.jobs);
-			state.matches = [];
-			renderMetrics();
-			renderRawJobs();
-			addConsoleLine(`Fetched ${state.jobs.length} job post${state.jobs.length === 1 ? "" : "s"} ready for review.`, "success");
-			logActivity(`Fetched ${state.jobs.length} job post${state.jobs.length === 1 ? "" : "s"}.`);
-		} finally {
-			stopProcessConsole(progress, "Done");
-		}
 	});
 }
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Spring Boot's default console logging -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <!-- Your custom file -->
+    <appender name="MATCH_LOG"
+              class="ch.qos.logback.core.FileAppender">
+        <file>logs/job-matches.txt</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger (console) -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Custom logger (file only) -->
+    <logger name="MATCH_LOGGER" level="INFO" additivity="false">
+        <appender-ref ref="MATCH_LOG"/>
+    </logger>
+
+</configuration>

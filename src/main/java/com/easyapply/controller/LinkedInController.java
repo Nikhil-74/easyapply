@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.easyapply.dto.JobMatchResult;
-import com.easyapply.model.JobPost;
 import com.easyapply.model.ResumeProfile;
-import com.easyapply.service.JobProcessorService;
-import com.easyapply.service.ResumeProfileService;
+import com.easyapply.serviceImpl.JobProcessorService;
+import com.easyapply.serviceImpl.ResumeProfileService;
 
 @RestController
 @RequestMapping("/api/linkedin")
@@ -22,11 +21,6 @@ public class LinkedInController {
 	public LinkedInController(JobProcessorService jobProcessorService, ResumeProfileService resumeProfileService) {
 		this.jobProcessorService = jobProcessorService;
 		this.resumeProfileService = resumeProfileService;
-	}
-
-	@GetMapping("/jobs")
-	public List<JobPost> getJobs() {
-		return jobProcessorService.fetchJobs();
 	}
 
 	@GetMapping("/jobs/matched")

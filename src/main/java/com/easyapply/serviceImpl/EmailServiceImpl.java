@@ -1,4 +1,4 @@
-package com.easyapply.service;
+package com.easyapply.serviceImpl;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,8 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.easyapply.config.MailProperties;
 import com.easyapply.config.UserProperties;
-import com.easyapply.dto.JobMatchResult;
-import com.easyapply.model.JobPost;
+import com.easyapply.reader.MailTemplateReader;
+import com.easyapply.reader.RecruiterListReader;
+import com.easyapply.service.EmailService;
 import com.easyapply.util.ResourcePathResolver;
 
 import jakarta.mail.Authenticator;
@@ -30,34 +31,37 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 
 @Service
-public class MatchedJobEmailService {
+public class EmailServiceImpl implements EmailService {
 
 	private final UserProperties userProperties;
 	private final MailProperties mailProperties;
+	private final RecruiterListReader recruiterListReader;
+	private final MailTemplateReader mailTemplateReader;
 	private final ResourcePathResolver resourcePathResolver;
 	private final SentEmailLogService sentEmailLogService;
 
-	public MatchedJobEmailService(
+	public EmailServiceImpl(
 			UserProperties userProperties,
 			MailProperties mailProperties,
+			RecruiterListReader recruiterListReader,
+			MailTemplateReader mailTemplateReader,
 			ResourcePathResolver resourcePathResolver,
 			SentEmailLogService sentEmailLogService) {
 		this.userProperties = userProperties;
 		this.mailProperties = mailProperties;
+		this.recruiterListReader = recruiterListReader;
+		this.mailTemplateReader = mailTemplateReader;
 		this.resourcePathResolver = resourcePathResolver;
 		this.sentEmailLogService = sentEmailLogService;
 	}
 
-	public String sendShortlistedJobEmails(List<JobMatchResult> matchedJobs) throws IOException, InterruptedException {
+	@Override
+	public String sendBulkEmails() throws IOException, InterruptedException {
 		validateCredentials();
 
-		if (matchedJobs == null || matchedJobs.isEmpty()) {
-			return "No shortlisted jobs found.";
-		}
-
-		List<MatchedEmailTask> tasks = buildEmailTasks(matchedJobs);
-		if (tasks.isEmpty()) {
-			return "No recipient emails found in matched jobs.";
+		List<String[]> recipientDetails = recruiterListReader.readRecipients();
+		if (recipientDetails.isEmpty()) {
+			return "No recipients found.";
 		}
 
 		Session session = createMailSession();
@@ -67,44 +71,24 @@ public class MatchedJobEmailService {
 		ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 		List<Future<?>> futures = new ArrayList<>();
 
-		for (MatchedEmailTask task : tasks) {
-			futures.add(executorService.submit(() -> sendToRecipient(session, resumePath, task, successCount)));
+		for (String[] detail : recipientDetails) {
+			if (detail.length < 2) {
+				continue;
+			}
+
+			futures.add(executorService.submit(() -> sendToRecipient(session, resumePath, detail, successCount)));
 		}
 
 		for (Future<?> future : futures) {
 			try {
 				future.get();
 			} catch (Exception e) {
-					e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 
 		executorService.shutdown();
-		return successCount.get() + " email(s) sent successfully for " + matchedJobs.size() + " shortlisted job(s).";
-	}
-
-	private List<MatchedEmailTask> buildEmailTasks(List<JobMatchResult> matchedJobs) {
-		List<MatchedEmailTask> tasks = new ArrayList<>();
-
-		for (JobMatchResult match : matchedJobs) {
-			if (match.getJob() == null || match.getJob().getContactEmails() == null) {
-				continue;
-			}
-
-			String subject = match.getEmailSubject();
-			String body = match.getEmailBody();
-			if (subject == null || subject.isBlank() || body == null || body.isBlank()) {
-				continue;
-			}
-
-			for (String email : match.getJob().getContactEmails()) {
-				if (email != null && !email.isBlank()) {
-					tasks.add(new MatchedEmailTask(match.getJob(), email.trim(), subject, body));
-				}
-			}
-		}
-
-		return tasks;
+		return successCount.get() + " email(s) sent successfully.";
 	}
 
 	private void validateCredentials() {
@@ -133,16 +117,18 @@ public class MatchedJobEmailService {
 		});
 	}
 
-	private void sendToRecipient(
-			Session session, Path resumePath, MatchedEmailTask task, AtomicInteger successCount) {
+	private void sendToRecipient(Session session, Path resumePath, String[] detail, AtomicInteger successCount) {
 		try {
+			String recipientEmail = detail[0].trim();
+			String recipientName = detail[1].trim();
+
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(userProperties.getEmail()));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(task.recipientEmail()));
-			message.setSubject(task.subject());
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+			message.setSubject(mailProperties.getSubject());
 
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setText(task.body());
+			messageBodyPart.setText(mailTemplateReader.render(recipientName));
 
 			MimeBodyPart attachmentPart = new MimeBodyPart();
 			attachmentPart.attachFile(resumePath.toFile());
@@ -157,15 +143,11 @@ public class MatchedJobEmailService {
 			long end = System.currentTimeMillis();
 
 			successCount.incrementAndGet();
-			sentEmailLogService.recordSent(task.job(), task.recipientEmail(), task.subject());
-			System.out.println(
-					"Matched job email sent to: " + task.recipientEmail() + " took " + (end - start) + " ms");
+			sentEmailLogService.recordBulkSent(recipientEmail, recipientName, mailProperties.getSubject());
+			System.out.println("Email sent successfully to: " + recipientEmail + " took " + (end - start) + " ms");
 		} catch (Exception e) {
-			System.out.println("Failed to send matched job email to: " + task.recipientEmail());
+			System.out.println("Failed to send email to: " + detail[0]);
 			e.printStackTrace();
 		}
-	}
-
-	private record MatchedEmailTask(JobPost job, String recipientEmail, String subject, String body) {
 	}
 }

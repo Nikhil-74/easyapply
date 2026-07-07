@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.easyapply.dto.JobMatchResult;
 import com.easyapply.service.EmailService;
-import com.easyapply.service.MatchedJobEmailService;
+import com.easyapply.serviceImpl.MatchedJobEmailService;
 
 @RestController
 @RequestMapping("/api/emails")

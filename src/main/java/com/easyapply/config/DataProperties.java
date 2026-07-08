@@ -5,8 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "easyapply.data")
 public class DataProperties {
 
-	private String recruiterList = "classpath:data/recruiter.txt";
-	private String mailTemplate = "classpath:templates/mail-template.txt";
+	private String recruiterList;
+	private String mailTemplate;
 
 	public String getRecruiterList() {
 		return recruiterList;

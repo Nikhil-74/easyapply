@@ -45,6 +45,11 @@ public class SentEmailLogService {
 		Set<String> recentKeys = readRecentSentKeys();
 		return recentKeys.contains(jobKey(job));
 	}
+	
+	public boolean wasRecentlySent(String recipient) {
+	    return readRecentSentKeys().stream()
+	            .anyMatch(key -> key.startsWith(recipient + "|"));
+	}
 
 	public synchronized void recordSent(JobPost job, String recipientEmail, String subject) throws IOException {
 		if (job == null) {

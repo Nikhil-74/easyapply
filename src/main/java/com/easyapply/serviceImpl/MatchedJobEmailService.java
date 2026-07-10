@@ -98,7 +98,7 @@ public class MatchedJobEmailService {
 			}
 
 			for (String email : match.getJob().getContactEmails()) {
-				if (email != null && !email.isBlank()) {
+				if (email != null && !email.isBlank() && email.contains("@")) {
 					tasks.add(new MatchedEmailTask(match.getJob(), email.trim(), subject, body));
 				}
 			}

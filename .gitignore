@@ -9,6 +9,7 @@ mail-template.txt
 sent-emails.json
 Nikhil_Rathod_Java_Developer.pdf
 resumes/
+logs/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

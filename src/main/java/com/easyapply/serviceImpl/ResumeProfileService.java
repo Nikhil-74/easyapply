@@ -19,15 +19,6 @@ public class ResumeProfileService {
 			Return exactly one JSON object and nothing else.
 			No markdown, no code fences, no explanation.
 
-			JSON schema:
-			{
-			  "name": "string",
-			  "yearsOfExperience": "string",
-			  "currentRole": "string",
-			  "skills": ["string"],
-			  "summary": "string"
-			}
-
 			Rules:
 			- name: candidate full name
 			- yearsOfExperience: total experience as written (example: "4 years")
@@ -80,12 +71,8 @@ public class ResumeProfileService {
 				""".formatted(truncated);
 
 		try {
-			long start = System.currentTimeMillis();
-
 			ResumeProfile profile = chatClient.prompt().system(SYSTEM_PROMPT).user(userPrompt).call()
 					.entity(ResumeProfile.class);
-
-			System.err.println(System.currentTimeMillis() - start);
 
 			normalize(profile);
 			return profile;

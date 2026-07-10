@@ -1,45 +1,50 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>EasyApply</title>
-	<link rel="icon" type="image/png" href="/favicon.png">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EasyApply</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 	<div id="animated-bg" class="animated-bg" aria-hidden="true"></div>
 	<header class="app-shell">
 		<nav class="topbar" aria-label="Primary">
-			<a class="brand" href="/" aria-label="EasyApply home">
-				<span class="brand-mark">EA</span>
-				<span>
-					<strong>EasyApply</strong>
+			<a class="brand" href="/" aria-label="EasyApply home"> <span
+				class="brand-mark">EA</span> <span> <strong>EasyApply</strong>
 					<small>Job matching cockpit</small>
-				</span>
+			</span>
 			</a>
 			<div class="status-pill" id="system-status">
-				<span class="pulse"></span>
-				Ready
+				<span class="pulse"></span> Ready
 			</div>
 		</nav>
-
+		<div id="global-progress" class="global-progress hidden">
+			<div class="progress-track">
+				<div id="progress-fill" class="progress-fill"></div>
+			</div>
+			<div class="progress-text">
+				<span id="progress-percent">0%</span> <span id="progress-message">Connecting...</span>
+			</div>
+		</div>
 		<section class="hero">
 			<div>
-				<p class="eyebrow">LinkedIn sourcing + resume matching + email outreach</p>
-				<h1>Review matched Java roles before you send.</h1>
-				<p class="hero-copy">
-					Pull posts from LinkedIn, compare them with your resume profile, preview generated emails,
-					and send targeted outreach from one focused workspace.
-				</p>
+				<p class="eyebrow">LinkedIn sourcing + resume matching + email
+					outreach</p>
+				<h1>Match Smarter. Apply Faster.</h1>
+				<p class="hero-copy">Pull posts from LinkedIn, compare them with
+					your resume profile, preview generated emails, and send targeted
+					outreach from one focused workspace.</p>
 			</div>
 			<div class="hero-actions" aria-label="Main actions">
 				<button class="button primary" id="load-matches-btn" type="button">
-					<span aria-hidden="true">◎</span>
-					Find Matches
+					<span aria-hidden="true">◎</span> Find Matches
 				</button>
 			</div>
 		</section>
@@ -52,40 +57,51 @@
 					<p class="section-label">Profile</p>
 					<h2 id="profile-title">Account and resume</h2>
 				</div>
-				<button class="icon-button" id="load-profile-btn" type="button" aria-label="Refresh profile" title="Refresh profile">↻</button>
+				<button class="icon-button" id="load-profile-btn" type="button"
+					aria-label="Refresh profile" title="Refresh profile">↻</button>
 			</div>
 			<div class="profile-settings">
 				<label class="field-label" for="profile-email">Gmail address</label>
-				<input class="text-input" id="profile-email" type="email" autocomplete="email" placeholder="you@gmail.com">
-
-				<label class="field-label" for="profile-password">Gmail app passkey</label>
+				<input class="text-input" id="profile-email" type="email"
+					autocomplete="email" placeholder="you@gmail.com"> <label
+					class="field-label" for="profile-password">Gmail app
+					passkey</label>
 				<div class="password-row">
-					<input class="text-input" id="profile-password" type="password" autocomplete="new-password" placeholder="Leave blank to keep current passkey">
-					<span id="profile-password-mask" class="muted"></span>
+					<input class="text-input" id="profile-password" type="password"
+						autocomplete="new-password"
+						placeholder="Leave blank to keep current passkey"> <span
+						id="profile-password-mask" class="muted"></span>
 				</div>
 
 				<div class="profile-actions">
-					<button class="button primary" id="save-profile-settings-btn" type="button">Save Profile Settings</button>
+					<button class="button primary" id="save-profile-settings-btn"
+						type="button">Save Profile Settings</button>
 				</div>
 
 				<div class="resume-uploader">
 					<div class="resume-summary" id="profile-resume-summary"></div>
-					<label class="field-label" for="resume-upload">Upload new resume PDF</label>
+					<label class="field-label" for="resume-upload">Upload new
+						resume PDF</label>
 					<div class="upload-row">
-						<input class="file-input" id="resume-upload" type="file" accept="application/pdf,.pdf">
-						<button class="button" id="upload-resume-btn" type="button">Use This Resume</button>
+						<input class="file-input" id="resume-upload" type="file"
+							accept="application/pdf,.pdf">
+						<button class="button" id="upload-resume-btn" type="button">Use
+							This Resume</button>
 					</div>
 				</div>
 			</div>
-			<div id="profile-state" class="muted">Loading your profile settings and parsed resume profile...</div>
+			<div id="profile-state" class="muted">Loading your profile
+				settings and parsed resume profile...</div>
 			<div id="profile-card" class="profile-card hidden"></div>
 			<div class="sent-history">
 				<div class="console-heading">
 					<h3>Sent emails</h3>
-					<button class="segmented" id="refresh-sent-history-btn" type="button">Refresh</button>
+					<button class="segmented" id="refresh-sent-history-btn"
+						type="button">Refresh</button>
 				</div>
 				<div id="sent-history-list" class="sent-history-list">
-					<p class="muted">Sent email history will appear here after successful sends.</p>
+					<p class="muted">Sent email history will appear here after
+						successful sends.</p>
 				</div>
 			</div>
 		</section>
@@ -99,16 +115,13 @@
 			</div>
 			<div class="metrics">
 				<div class="metric">
-					<span id="metric-jobs">0</span>
-					<small>Jobs found</small>
+					<span id="metric-jobs">0</span> <small>Jobs found</small>
 				</div>
 				<div class="metric">
-					<span id="metric-matches">0</span>
-					<small>Matches</small>
+					<span id="metric-matches">0</span> <small>Matches</small>
 				</div>
 				<div class="metric">
-					<span id="metric-average">0%</span>
-					<small>Avg match</small>
+					<span id="metric-average">0%</span> <small>Avg match</small>
 				</div>
 			</div>
 		</section>
@@ -126,14 +139,14 @@
 				</div>
 			</div>
 			<div class="shortlist-actions">
-				<button class="button danger" id="send-shortlisted-btn" type="button">
-					<span aria-hidden="true">✉</span>
-					Send Email to Shortlisted Jobs
+				<button class="button danger" id="send-shortlisted-btn"
+					type="button">
+					<span aria-hidden="true">✉</span> Send Email to Shortlisted Jobs
 				</button>
 			</div>
 			<div id="jobs-state" class="empty-state">
-				<strong>No matches loaded yet.</strong>
-				<span>Use Find Matches to run your LinkedIn scrape and resume comparison.</span>
+				<strong>No matches loaded yet.</strong> <span>Use Find
+					Matches to run your LinkedIn scrape and resume comparison.</span>
 			</div>
 			<div id="jobs-list" class="job-list"></div>
 		</section>
@@ -145,11 +158,11 @@
 					<h2 id="outreach-title">Email controls</h2>
 				</div>
 			</div>
-			<p class="muted">Send emails only after checking the generated subjects and bodies in the match cards.</p>
+			<p class="muted">Send emails only after checking the generated
+				subjects and bodies in the match cards.</p>
 			<div class="action-stack">
 				<button class="button full" id="send-bulk-btn" type="button">
-					<span aria-hidden="true">☰</span>
-					Review Bulk Emails
+					<span aria-hidden="true">☰</span> Review Bulk Emails
 				</button>
 			</div>
 			<div class="activity-log" aria-live="polite">
@@ -179,7 +192,9 @@
 				</div>
 				<div class="job-card-actions">
 					<span class="match-badge"></span>
-					<button class="icon-button delete-match hidden" type="button" aria-label="Remove job from shortlist" title="Remove from shortlist">×</button>
+					<button class="icon-button delete-match hidden" type="button"
+						aria-label="Remove job from shortlist"
+						title="Remove from shortlist">×</button>
 				</div>
 			</div>
 			<div class="job-detail-grid">
@@ -195,26 +210,31 @@
 			<details class="email-preview">
 				<summary>Email preview</summary>
 				<p class="email-subject"></p>
-				<textarea class="email-body-editor" spellcheck="true" aria-label="Email body"></textarea>
+				<textarea class="email-body-editor" spellcheck="true"
+					aria-label="Email body"></textarea>
 			</details>
 		</article>
 	</template>
 
-	<div class="modal-backdrop hidden" id="bulk-modal" role="dialog" aria-modal="true" aria-labelledby="bulk-modal-title">
+	<div class="modal-backdrop hidden" id="bulk-modal" role="dialog"
+		aria-modal="true" aria-labelledby="bulk-modal-title">
 		<section class="bulk-modal">
 			<header class="modal-header">
 				<div>
 					<p class="section-label">Bulk outreach</p>
 					<h2 id="bulk-modal-title">Review before sending</h2>
 				</div>
-				<button class="icon-button" id="close-bulk-modal-btn" type="button" aria-label="Close bulk email review" title="Close">×</button>
+				<button class="icon-button" id="close-bulk-modal-btn" type="button"
+					aria-label="Close bulk email review" title="Close">×</button>
 			</header>
 
 			<div class="modal-layout">
 				<nav class="modal-tabs" aria-label="Bulk email sections">
-					<button class="modal-tab active" type="button" data-bulk-tab="recipients">Recipients</button>
+					<button class="modal-tab active" type="button"
+						data-bulk-tab="recipients">Recipients</button>
 					<button class="modal-tab" type="button" data-bulk-tab="subject">Subject</button>
-					<button class="modal-tab" type="button" data-bulk-tab="body">Email Body</button>
+					<button class="modal-tab" type="button" data-bulk-tab="body">Email
+						Body</button>
 					<button class="modal-tab" type="button" data-bulk-tab="resume">Resume</button>
 				</nav>
 
@@ -223,46 +243,58 @@
 						<div class="panel-heading compact">
 							<div>
 								<h3>Recruiter recipients</h3>
-								<p class="muted">Each row saves as email,name in the recruiter text file.</p>
+								<p class="muted">Each row saves as email,name in the
+									recruiter text file.</p>
 							</div>
-							<button class="button" id="add-recipient-btn" type="button">+ Add Row</button>
+							<button class="button" id="add-recipient-btn" type="button">+
+								Add Row</button>
 						</div>
 						<div class="recipient-table" id="recipient-table"></div>
 					</section>
 
 					<section class="bulk-tab-panel hidden" data-bulk-panel="subject">
-						<label class="field-label" for="bulk-subject">Email subject</label>
-						<input class="text-input" id="bulk-subject" type="text" autocomplete="off">
+						<label class="field-label" for="bulk-subject">Email
+							subject</label> <input class="text-input" id="bulk-subject" type="text"
+							autocomplete="off">
 					</section>
 
 					<section class="bulk-tab-panel hidden" data-bulk-panel="body">
-						<label class="field-label" for="bulk-body">Email body template</label>
+						<label class="field-label" for="bulk-body">Email body
+							template</label>
 						<textarea class="template-editor" id="bulk-body" spellcheck="true"></textarea>
-						<p class="muted placeholder-note">Use {recruiterName} where the recipient name should appear.</p>
+						<p class="muted placeholder-note">Use {recruiterName} where
+							the recipient name should appear.</p>
 					</section>
 
 					<section class="bulk-tab-panel hidden" data-bulk-panel="resume">
 						<div class="resume-summary" id="resume-summary"></div>
-						<iframe class="resume-preview hidden" id="resume-preview" title="Resume preview"></iframe>
+						<iframe class="resume-preview hidden" id="resume-preview"
+							title="Resume preview"></iframe>
 					</section>
 				</div>
 			</div>
 
 			<footer class="modal-footer">
-				<div class="modal-message" id="bulk-modal-message" aria-live="polite"></div>
+				<div class="modal-message" id="bulk-modal-message"
+					aria-live="polite"></div>
 				<div class="modal-actions">
-					<button class="button" id="save-bulk-draft-btn" type="button">Save Changes</button>
-					<button class="button danger" id="send-bulk-confirm-btn" type="button">
-						<span aria-hidden="true">✉</span>
-						Send Bulk Emails
+					<button class="button" id="save-bulk-draft-btn" type="button">Save
+						Changes</button>
+					<button class="button danger" id="send-bulk-confirm-btn"
+						type="button">
+						<span aria-hidden="true">✉</span> Send Bulk Emails
 					</button>
 				</div>
 			</footer>
 		</section>
 	</div>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js" defer></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"
+		defer></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"
+		defer></script>
 	<script src="/app.js" defer></script>
 </body>
 </html>

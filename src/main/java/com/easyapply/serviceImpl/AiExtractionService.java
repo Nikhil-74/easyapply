@@ -1,13 +1,8 @@
 package com.easyapply.serviceImpl;
 
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
-import com.easyapply.config.AiProperties;
 import com.easyapply.exception.JobExtractionException;
 import com.easyapply.model.JobPost;
 
@@ -15,82 +10,37 @@ import com.easyapply.model.JobPost;
 public class AiExtractionService {
 
 	private static final String SYSTEM_PROMPT = """
-			You are a precise information extraction engine.
+				You are a precise information extraction engine.
+			     Extract structured data from the LinkedIn hiring post provided by the user.
 
-			Extract structured data from the LinkedIn hiring post provided by the user.
+			     STRICT REQUIREMENTS:
+			     - Do not invent or infer information. Use only information explicitly present.
+			     - If a value cannot be determined, use an empty string ("") or an empty array ([]).
+			     - Remove duplicate values from arrays.
+			     - Preserve original capitalization for titles and names.
 
-			Return EXACTLY one valid JSON object and nothing else.
+			     FIELD EXTRACTION RULES:
+			     - Job Title: The primary role being actively hired for. If multiple, pick the main one.
+			     - Company Name: The name of the company hiring.
+			     - Recruiter: Name and LinkedIn profile URL of the post author/hiring person.
+			     - Experience: Convert the required experience into a numeric range representing YEARS (e.g., "0" for fresher, "2-4", "5+"). Do not use text words. If months are specified, convert to decimals (e.g., "6 months" = "0.5").
+			     - Skills: Extract unique technical/professional skills. Ignore generic soft skills (like "team player", "good attitude") unless explicitly listed under a "Requirements" section.
+			     - Emails: Extract every valid email address, including those under 'Emails Found' sections.
 
-			STRICT REQUIREMENTS:
-			- Return only JSON.
-			- Do not wrap the JSON in markdown or code fences.
-			- Do not include explanations, comments, notes, or additional text.
-			- Do not invent or infer information.
-			- Use only information explicitly present in the input.
-			- If a value cannot be determined, use an empty string ("").
-			- For array fields with no values, return an empty array ([]).
-			- Remove duplicate values from arrays.
-
-			JSON format:
-
-			{
-			  "jobTitle": "",
-			  "recruiterName": "",
-			  "recruiterProfile": "",
-			  "experienceRequired": "",
-			  "requiredSkills": [],
-			  "location": [],
-			  "contactEmails": []
-			}
-
-			Field Extraction Rules:
-
-			- jobTitle:
-			  Primary role being hired for.
-
-			- recruiterName:
-			  Name of the recruiter, hiring person, or post author if explicitly mentioned.
-
-			- recruiterProfile:
-			  LinkedIn profile URL if present.
-
-			- experienceRequired:
-			  Copy the exact experience phrase as written in the post.
-
-			- requiredSkills:
-			  Extract unique technical and professional skills explicitly mentioned.
-
-			- location:
-			  Extract all job locations mentioned.
-
-			- contactEmails:
-			  Extract every valid email address present in the post.
-			  Also extract emails listed under an 'Emails Found:' section.
-
-			Additional Rules:
-
-			- Preserve original capitalization where possible.
-			- Do not generate fields not present in the schema.
-			- If the content is not a hiring or job-related post, return the schema with empty values.
-			- Return exactly one JSON object.
-			- When multiple job roles are mentioned, select the primary role being actively hired.
-			- When multiple experience requirements are mentioned, extract the one associated with the selected job role.
-			- Do not include generic words such as "communication", "team player", or "good attitude" in requiredSkills unless explicitly listed as required skills.
+				Additional Rules:
+				- Preserve original capitalization where possible.
+				- Do not generate fields not present in the schema.
+				- If the content is not a hiring or job-related post, return the schema with empty values.
+				- Return exactly one JSON object.
+				- When multiple job roles are mentioned, select the primary role being actively hired.
+				- When multiple experience requirements are mentioned, extract the one associated with the selected job role.
+				- Do not include generic words such as "communication", "team player", or "good attitude" in requiredSkills unless explicitly listed as required skills.
 			""";
 
-	private static final Pattern RANGE_PATTERN = Pattern
-			.compile("(\\d+(?:\\.\\d+)?)\\s*(?:-|to)\\s*(\\d+(?:\\.\\d+)?)");
-
-	private static final Pattern PLUS_PATTERN = Pattern.compile("(\\d+(?:\\.\\d+)?)\\s*\\+");
-
-	private static final Pattern SINGLE_PATTERN = Pattern.compile("(\\d+(?:\\.\\d+)?)");
-
 	private final ChatClient chatClient;
-	private final AiProperties aiProperties;
 
-	public AiExtractionService(ChatClient.Builder builder, AiProperties aiProperties) {
+	public AiExtractionService(ChatClient.Builder builder) {
 		this.chatClient = builder.build();
-		this.aiProperties = aiProperties;
 	}
 
 	public JobPost extract(String postText) {
@@ -112,49 +62,6 @@ public class AiExtractionService {
 		} catch (Exception ex) {
 			throw new JobExtractionException("Failed to extract job post data", ex);
 		}
-	}
-
-	public boolean matchesTargetExperience(JobPost job) {
-		if (job == null || job.getExperienceRequired() == null || job.getExperienceRequired().isBlank()) {
-			return false;
-		}
-
-		String experience = job.getExperienceRequired().toLowerCase(Locale.ROOT);
-
-		double[] range = extractExperienceRange(experience);
-		if (range == null) {
-			return false;
-		}
-
-		double targetMin = aiProperties.getMinExperienceYears();
-		double targetMax = aiProperties.getMaxExperienceYears();
-
-		double expMin = range[0];
-		double expMax = range[1];
-
-		return expMax >= targetMin && expMin <= targetMax;
-	}
-
-	private double[] extractExperienceRange(String experience) {
-
-		Matcher rangeMatcher = RANGE_PATTERN.matcher(experience);
-		if (rangeMatcher.find()) {
-			return new double[] { Double.parseDouble(rangeMatcher.group(1)),
-					Double.parseDouble(rangeMatcher.group(2)) };
-		}
-
-		Matcher plusMatcher = PLUS_PATTERN.matcher(experience);
-		if (plusMatcher.find()) {
-			return new double[] { Double.parseDouble(plusMatcher.group(1)), Double.MAX_VALUE };
-		}
-
-		Matcher singleMatcher = SINGLE_PATTERN.matcher(experience);
-		if (singleMatcher.find()) {
-			double years = Double.parseDouble(singleMatcher.group(1));
-			return new double[] { years, years };
-		}
-
-		return null;
 	}
 
 }

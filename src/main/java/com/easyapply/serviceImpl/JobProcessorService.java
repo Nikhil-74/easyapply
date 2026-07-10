@@ -8,19 +8,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.easyapply.config.AiProperties;
 import com.easyapply.config.MailProperties;
 import com.easyapply.dto.JobMatchResult;
 import com.easyapply.dto.MatchScoreResult;
+import com.easyapply.dto.ProgressUpdate;
 import com.easyapply.model.JobPost;
 import com.easyapply.model.ResumeProfile;
 import com.easyapply.reader.MailTemplateReader;
 import com.easyapply.service.JobMatchScorer;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class JobProcessorService {
 
 	private static final Logger log = LoggerFactory.getLogger(JobProcessorService.class);
-	private static final int MIN_MATCH_PERCENTAGE = 60;
 	private static final String DEFAULT_RECIPIENT = "Hiring Manager";
 
 	private final LinkedInScraperService scraperService;
@@ -30,18 +34,9 @@ public class JobProcessorService {
 	private final MailProperties mailProperties;
 	private final MailTemplateReader mailTemplateReader;
 	private final JobMatchScorer jobMatchScorer;
-
-	public JobProcessorService(LinkedInScraperService scraperService, AiExtractionService aiExtractionService,
-			ResumeProfileService resumeProfileService, SentEmailLogService sentEmailLogService,
-			MailProperties mailProperties, MailTemplateReader mailTemplateReader, JobMatchScorer jobMatchScorer) {
-		this.scraperService = scraperService;
-		this.aiExtractionService = aiExtractionService;
-		this.resumeProfileService = resumeProfileService;
-		this.sentEmailLogService = sentEmailLogService;
-		this.mailProperties = mailProperties;
-		this.mailTemplateReader = mailTemplateReader;
-		this.jobMatchScorer = jobMatchScorer;
-	}
+	private final SseService sseService;
+	private final AiProperties aiProperties;
+	private final JobExperienceMatcher jobExperienceMatcher;
 
 	public List<JobMatchResult> fetchMatchedJobs() {
 		ResumeProfile profile = resumeProfileService.getProfile();
@@ -64,11 +59,16 @@ public class JobProcessorService {
 			} catch (Exception e) {
 				log.warn("Failed to match job: {}", e.getMessage());
 			} finally {
-				log.info("Processed {}/{} jobs ({} remaining)", completed, total, total - completed);
+				String message = String.format("Processed %d/%d jobs (%d remaining)", completed, total,
+						total - completed);
+
+				log.info(message);
+				sseService.send(new ProgressUpdate(completed, total, message));
 			}
 		}
 
 		results.sort(Comparator.comparingInt(JobMatchResult::getMatchPercentage).reversed());
+		sseService.complete();
 		return results;
 	}
 
@@ -77,7 +77,7 @@ public class JobProcessorService {
 			JobPost job = aiExtractionService.extract(post);
 			log.debug("Extracted job: {}", job);
 
-			if (!aiExtractionService.matchesTargetExperience(job)) {
+			if (!jobExperienceMatcher.matchesTargetExperience(job)) {
 				return null;
 			}
 			if (sentEmailLogService.wasRecentlySent(job)) {
@@ -95,9 +95,9 @@ public class JobProcessorService {
 		try {
 			MatchScoreResult scoreResult = jobMatchScorer.score(job, profile);
 
-			int matchPct = scoreResult.getScore();
+			int matchPercentage = scoreResult.getScore();
 
-			if (matchPct < MIN_MATCH_PERCENTAGE) {
+			if (matchPercentage < aiProperties.getMatchMinimumPercentage()) {
 				return null;
 			}
 
@@ -105,7 +105,7 @@ public class JobProcessorService {
 					? DEFAULT_RECIPIENT
 					: extractFirstName(job.getRecruiterName());
 
-			return JobMatchResult.builder().job(job).matchPercentage(matchPct)
+			return JobMatchResult.builder().job(job).matchPercentage(matchPercentage)
 					.matchedSkills(scoreResult.getMatchedSkills()).missingSkills(scoreResult.getMissingSkills())
 					.emailSubject(mailProperties.getSubject()).emailBody(mailTemplateReader.render(recipientName))
 					.build();
@@ -121,7 +121,7 @@ public class JobProcessorService {
 		if (firstName.isEmpty()) {
 			return firstName;
 		}
-		return Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
+		return Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1).toLowerCase();
 	}
 
 }

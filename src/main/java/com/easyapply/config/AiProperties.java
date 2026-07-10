@@ -8,6 +8,15 @@ public class AiProperties {
 	private int maxPostTextLength;
 	private int minExperienceYears;
 	private int maxExperienceYears;
+	private int matchMinimumPercentage;
+
+	public int getMatchMinimumPercentage() {
+		return matchMinimumPercentage;
+	}
+
+	public void setMatchMinimumPercentage(int matchMininumPercentage) {
+		this.matchMinimumPercentage = matchMininumPercentage;
+	}
 
 	public int getMaxPostTextLength() {
 		return maxPostTextLength;

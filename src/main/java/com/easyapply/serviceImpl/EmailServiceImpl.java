@@ -67,6 +67,7 @@ public class EmailServiceImpl implements EmailService {
 		Session session = createMailSession();
 		Path resumePath = resourcePathResolver.resolveExternalPath(userProperties.getResumePath());
 		AtomicInteger successCount = new AtomicInteger();
+		AtomicInteger skippedCount = new AtomicInteger();
 
 		ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 		List<Future<?>> futures = new ArrayList<>();
@@ -75,7 +76,10 @@ public class EmailServiceImpl implements EmailService {
 			if (detail.length < 2) {
 				continue;
 			}
-
+			if (sentEmailLogService.wasRecentlySent(detail[0].trim())) {
+				skippedCount.incrementAndGet();
+				continue;
+			}
 			futures.add(executorService.submit(() -> sendToRecipient(session, resumePath, detail, successCount)));
 		}
 
@@ -88,7 +92,9 @@ public class EmailServiceImpl implements EmailService {
 		}
 
 		executorService.shutdown();
-		return successCount.get() + " email(s) sent successfully.";
+		return skippedCount.get() > 0
+				? String.format("%d email(s) sent successfully, %d skipped.", successCount.get(), skippedCount.get())
+				: String.format("%d email(s) sent successfully.", successCount.get());
 	}
 
 	private void validateCredentials() {

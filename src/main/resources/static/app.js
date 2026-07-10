@@ -43,9 +43,13 @@ const elements = {
 	bulkMessage: document.querySelector("#bulk-modal-message"),
 	recipientTable: document.querySelector("#recipient-table"),
 	bulkSubject: document.querySelector("#bulk-subject"),
-	bulkBody: document.querySelector("#bulk-body"),
-	resumeSummary: document.querySelector("#resume-summary"),
-	resumePreview: document.querySelector("#resume-preview"),
+    bulkBody: document.querySelector("#bulk-body"),
+    globalProgress: document.querySelector("#global-progress"),
+    progressFill: document.querySelector("#progress-fill"),
+    progressPercent: document.querySelector("#progress-percent"),
+    progressMessage: document.querySelector("#progress-message"),
+    resumeSummary: document.querySelector("#resume-summary"),
+    resumePreview: document.querySelector("#resume-preview"),
 	bulkTabs: [...document.querySelectorAll("[data-bulk-tab]")],
 	bulkPanels: [...document.querySelectorAll("[data-bulk-panel]")]
 };
@@ -176,18 +180,13 @@ async function uploadResume() {
 
 async function loadMatches() {
 	await withBusy("Finding matches", async () => {
-		const progress = startProcessConsole("Finding matches", [
-			"Loading your parsed resume profile for comparison.",
-			"Opening LinkedIn and collecting recent posts from the feed.",
-			"Extracting job title, recruiter, skills, location, and contact emails.",
-			"Checking recent sent-email history to avoid repeated outreach.",
-			"Filtering jobs by your target experience range.",
-			"Comparing required skills with your resume skills.",
-			"Scoring each job and keeping strong matches.",
-			"Generating email subject and body drafts for shortlisted jobs."
-		]);
+		clearProcessConsole();
+		elements.consoleState.textContent = "Finding matches";
 		elements.jobsState.classList.remove("hidden");
-		elements.jobsState.innerHTML = "<strong>Matching jobs...</strong><span>Scraping posts and comparing them with your resume profile.</span>";
+		elements.jobsState.innerHTML = "<strong>Matching jobs...</strong><span>Listening to live progress from the server.</span>";
+
+		const eventSource = startProgressStream();
+
 		try {
 			state.matches = withMatchIds(await requestJson(endpoints.matches));
 			state.jobs = state.matches.map((match) => match.job).filter(Boolean);
@@ -196,7 +195,12 @@ async function loadMatches() {
 			addConsoleLine(`Shortlist ready with ${state.matches.length} matched opportunit${state.matches.length === 1 ? "y" : "ies"}.`, "success");
 			logActivity(`Found ${state.matches.length} matched opportunit${state.matches.length === 1 ? "y" : "ies"}.`);
 		} finally {
-			stopProcessConsole(progress, "Done");
+			elements.consoleState.textContent = "Done";
+			// Ensure the stream is closed when the main request finishes or errors out
+			if (eventSource.readyState !== EventSource.CLOSED) {
+				eventSource.close();
+				elements.globalProgress.classList.add("hidden");
+			}
 		}
 	});
 }
@@ -733,4 +737,46 @@ function formatBytes(bytes) {
 	}
 
 	return `${value.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+}
+
+function startProgressStream() {
+	elements.globalProgress.classList.remove("hidden");
+	updateProgressBar(0, "Initializing connection...");
+
+	const eventSource = new EventSource("/api/progress");
+
+	eventSource.addEventListener("progress", (event) => {
+		const data = JSON.parse(event.data);
+		const percent = data.percent || data.value || 0;
+		const message = data.message || "Processing...";
+
+		updateProgressBar(percent, message);
+		
+		if (message) {
+			addConsoleLine(message, "active");
+		}
+
+		// Close automatically if backend signals completion
+		if (percent >= 100 || data.status === "complete") {
+			eventSource.close();
+			addConsoleLine("Process completed successfully.", "success");
+			setTimeout(() => {
+				elements.globalProgress.classList.add("hidden");
+			}, 2000);
+		}
+	});
+
+	eventSource.onerror = () => {
+		eventSource.close();
+		addConsoleLine("Progress stream disconnected.", "error");
+		elements.globalProgress.classList.add("hidden");
+	};
+
+	return eventSource;
+}
+
+function updateProgressBar(percent, message) {
+	elements.progressFill.style.width = `${percent}%`;
+	elements.progressPercent.textContent = `${percent}%`;
+	elements.progressMessage.textContent = message;
 }

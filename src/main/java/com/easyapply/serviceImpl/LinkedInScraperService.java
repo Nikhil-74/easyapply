@@ -17,7 +17,6 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +37,7 @@ public class LinkedInScraperService {
 	private static final Pattern EMAIL_PATTERN = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}");
 	private static final Pattern AT_BRACKET_PATTERN = Pattern.compile("\\[at\\]", Pattern.CASE_INSENSITIVE);
 	private static final Pattern AT_PAREN_PATTERN = Pattern.compile("\\(at\\)", Pattern.CASE_INSENSITIVE);
+	private int processedIndex = 0;
 
 	private static final String SCROLL_INTO_VIEW_SCRIPT = """
 			const items = document.querySelectorAll("div[role='listitem']");
@@ -76,7 +76,7 @@ public class LinkedInScraperService {
 		int target = seleniumProperties.getMaxPosts();
 		List<String> posts = new ArrayList<>();
 		Set<String> seen = new HashSet<>();
-
+		int previousCount = 0;
 		WebDriver driver = seleniumConfig.createDriver();
 		try {
 			driver.get(seleniumProperties.getSearchUrl());
@@ -87,9 +87,12 @@ public class LinkedInScraperService {
 
 			for (int scroll = 0; scroll < seleniumProperties.getMaxScrollAttempts()
 					&& posts.size() < target; scroll++) {
-				wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(POST_SELECTOR)));
+				final int expectedMinCount = previousCount + 1;
+				wait.until(d -> d.findElements(By.cssSelector(POST_SELECTOR)).size() >= expectedMinCount);
+				expandPosts(driver);
 				collectPosts(driver, posts, seen, target);
-
+				
+				previousCount = driver.findElements(By.cssSelector(POST_SELECTOR)).size();
 				log.info("Scroll {}: {} / {} posts", scroll + 1, posts.size(), target);
 
 				if (posts.size() >= target) {
@@ -124,24 +127,27 @@ public class LinkedInScraperService {
 	}
 
 	private void collectPosts(WebDriver driver, List<String> posts, Set<String> seen, int target) {
-		for (WebElement post : driver.findElements(By.cssSelector(POST_SELECTOR))) {
-			if (posts.size() >= target) {
-				return;
-			}
+		List<WebElement> allPosts = driver.findElements(By.cssSelector(POST_SELECTOR));
+	    
+	    for (int i = processedIndex; i < allPosts.size(); i++) {
+	    	
+			if (posts.size() >= target) return;
+
 			try {
-				String text = post.getText().trim();
+				WebElement post = allPosts.get(i);
+	            String text = post.getText().trim();
 				List<String> emails = extractEmails(post);
 
 				if (!emails.isEmpty()) {
 					text += "\n\nEmails Found:\n" + String.join(", ", emails);
 				}
 
-				if (text.length() < MIN_POST_TEXT_LENGTH || !seen.add(text)) {
-					continue;
-				}
+				if (text.length() < MIN_POST_TEXT_LENGTH || !seen.add(text)) continue;
+
 				posts.add(text);
+				processedIndex++;
 			} catch (StaleElementReferenceException ignored) {
-				// element went stale while scrolling — skip it
+				log.error(ignored.getMessage());
 			}
 		}
 	}
@@ -153,7 +159,7 @@ public class LinkedInScraperService {
 				.filter(Objects::nonNull).map(href -> href.replaceFirst("mailto:", "").split("\\?")[0])
 				.forEach(emails::add);
 
-		String text = post.getDomAttribute("textContent");
+		String text = post.getDomProperty("textContent");
 
 		if (text != null) {
 			text = AT_BRACKET_PATTERN.matcher(text).replaceAll("@");
@@ -174,11 +180,23 @@ public class LinkedInScraperService {
 	private void scrollPage(WebDriver driver) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 
-		// LinkedIn infinite scroll lives inside a feed container, not the window
 		js.executeScript(SCROLL_INTO_VIEW_SCRIPT);
 
-		// keyboard scroll as backup
 		WebElement body = driver.findElement(By.tagName("body"));
 		new Actions(driver).click(body).sendKeys(Keys.END).sendKeys(Keys.PAGE_DOWN).perform();
+	}
+	
+	private void expandPosts(WebDriver driver) {
+		String seeMoreSelector = "button[class*='see-more']";
+		driver.findElements(By.cssSelector(seeMoreSelector)).forEach(btn -> {
+			try {
+				if (btn.isDisplayed()) {
+					((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+					sleep(100);
+				}
+			} catch (Exception ignored) {
+				log.error(ignored.getMessage());
+			}
+		});
 	}
 }

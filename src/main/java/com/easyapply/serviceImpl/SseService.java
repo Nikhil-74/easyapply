@@ -11,40 +11,57 @@ public class SseService {
 	private volatile SseEmitter emitter;
 
 	public SseEmitter connect() {
+		SseEmitter newEmitter = new SseEmitter(Long.MAX_VALUE);
 
-		emitter = new SseEmitter(Long.MAX_VALUE);
+		newEmitter.onCompletion(() -> this.emitter = null);
+		newEmitter.onTimeout(() -> this.emitter = null);
+		newEmitter.onError(ex -> this.emitter = null);
 
-		emitter.onCompletion(() -> emitter = null);
-		emitter.onTimeout(() -> emitter = null);
-		emitter.onError(ex -> emitter = null);
+		this.emitter = newEmitter;
 
-		return emitter;
+		return newEmitter;
 	}
 
 	public void send(Object data) {
+		sendEvent("progress", data);
+	}
 
-		if (emitter == null) {
+	public void log(String message) {
+		sendEvent("log", message);
+	}
+
+	private void sendEvent(String eventName, Object payload) {
+
+		SseEmitter currentEmitter = this.emitter;
+
+		if (currentEmitter == null) {
 			return;
 		}
 
 		try {
-			emitter.send(SseEmitter.event().name("progress").data(data));
+			currentEmitter.send(SseEmitter.event().name(eventName).data(payload));
 		} catch (Exception e) {
-			emitter.completeWithError(e);
-			emitter = null;
+			currentEmitter.completeWithError(e);
+			this.emitter = null;
 		}
 	}
 
 	public void complete() {
 
 		ProgressUpdate finalUpdate = new ProgressUpdate(1, 1, "Matching complete. Rendering results...");
-	    finalUpdate.setStatus("complete"); 
-	    
-	    this.send(finalUpdate);
+		finalUpdate.setStatus("complete");
+		this.send(finalUpdate);
 
-		if (emitter != null) {
-			emitter.complete();
-			emitter = null;
+		SseEmitter currentEmitter = this.emitter;
+
+		if (currentEmitter != null) {
+			try {
+				currentEmitter.complete();
+			} catch (Exception ignored) {
+				// Safely ignore if the connection dropped exactly as it completed
+			} finally {
+				this.emitter = null;
+			}
 		}
 	}
 }

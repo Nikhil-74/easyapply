@@ -26,7 +26,10 @@ import com.easyapply.config.SeleniumConfig;
 import com.easyapply.config.SeleniumProperties;
 import com.easyapply.exception.ScrapingException;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class LinkedInScraperService {
 
 	private static final Logger log = LoggerFactory.getLogger(LinkedInScraperService.class);
@@ -55,23 +58,8 @@ public class LinkedInScraperService {
 
 	private final SeleniumConfig seleniumConfig;
 	private final SeleniumProperties seleniumProperties;
+	private final SseService sseService;
 
-	public LinkedInScraperService(SeleniumConfig seleniumConfig, SeleniumProperties seleniumProperties) {
-		this.seleniumConfig = seleniumConfig;
-		this.seleniumProperties = seleniumProperties;
-	}
-
-	/**
-	 * Scrapes up to {@code maxPosts} unique post texts from the configured search
-	 * URL, scrolling the feed as needed.
-	 *
-	 * <p>
-	 * Note: this method drives a single Selenium {@link WebDriver} session
-	 * sequentially. WebDriver sessions are not thread-safe, so this work is
-	 * intentionally NOT parallelized across virtual threads — each command (find,
-	 * getText, execute script) is itself a blocking round-trip to the browser
-	 * driver, but they must happen in order against the one session.
-	 */
 	public List<String> scrapePosts() {
 		int target = seleniumProperties.getMaxPosts();
 		List<String> posts = new ArrayList<>();
@@ -91,10 +79,10 @@ public class LinkedInScraperService {
 				wait.until(d -> d.findElements(By.cssSelector(POST_SELECTOR)).size() >= expectedMinCount);
 				expandPosts(driver);
 				collectPosts(driver, posts, seen, target);
-				
-				previousCount = driver.findElements(By.cssSelector(POST_SELECTOR)).size();
-				log.info("Scroll {}: {} / {} posts", scroll + 1, posts.size(), target);
 
+				previousCount = driver.findElements(By.cssSelector(POST_SELECTOR)).size();
+				String message = String.format("Scroll %d: %d / %d posts", scroll + 1, posts.size(), target);
+				sseService.log(message);
 				if (posts.size() >= target) {
 					break;
 				}
@@ -128,21 +116,23 @@ public class LinkedInScraperService {
 
 	private void collectPosts(WebDriver driver, List<String> posts, Set<String> seen, int target) {
 		List<WebElement> allPosts = driver.findElements(By.cssSelector(POST_SELECTOR));
-	    
-	    for (int i = processedIndex; i < allPosts.size(); i++) {
-	    	
-			if (posts.size() >= target) return;
+
+		for (int i = processedIndex; i < allPosts.size(); i++) {
+
+			if (posts.size() >= target)
+				return;
 
 			try {
 				WebElement post = allPosts.get(i);
-	            String text = post.getText().trim();
+				String text = post.getText().trim();
 				List<String> emails = extractEmails(post);
 
 				if (!emails.isEmpty()) {
 					text += "\n\nEmails Found:\n" + String.join(", ", emails);
 				}
 
-				if (text.length() < MIN_POST_TEXT_LENGTH || !seen.add(text)) continue;
+				if (text.length() < MIN_POST_TEXT_LENGTH || !seen.add(text))
+					continue;
 
 				posts.add(text);
 				processedIndex++;
@@ -185,7 +175,7 @@ public class LinkedInScraperService {
 		WebElement body = driver.findElement(By.tagName("body"));
 		new Actions(driver).click(body).sendKeys(Keys.END).sendKeys(Keys.PAGE_DOWN).perform();
 	}
-	
+
 	private void expandPosts(WebDriver driver) {
 		String seeMoreSelector = "button[class*='see-more']";
 		driver.findElements(By.cssSelector(seeMoreSelector)).forEach(btn -> {

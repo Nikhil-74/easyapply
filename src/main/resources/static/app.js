@@ -740,39 +740,47 @@ function formatBytes(bytes) {
 }
 
 function startProgressStream() {
-	elements.globalProgress.classList.remove("hidden");
-	updateProgressBar(0, "Initializing connection...");
+    elements.globalProgress.classList.remove("hidden");
+    updateProgressBar(0, "Initializing connection...");
 
-	const eventSource = new EventSource("/api/progress");
+    const eventSource = new EventSource("/api/progress");
 
-	eventSource.addEventListener("progress", (event) => {
-		const data = JSON.parse(event.data);
-		const percent = data.percent || data.value || 0;
-		const message = data.message || "Processing...";
+	eventSource.addEventListener("log", (event) => {
 
-		updateProgressBar(percent, message);
-		
-		if (message) {
-			addConsoleLine(message, "active");
-		}
+	    let logMessage = event.data;
+	    try { logMessage = JSON.parse(logMessage); } catch (e) {}
 
-		// Close automatically if backend signals completion
-		if (percent >= 100 || data.status === "complete") {
-			eventSource.close();
-			addConsoleLine("Process completed successfully.", "success");
-			setTimeout(() => {
-				elements.globalProgress.classList.add("hidden");
-			}, 2000);
-		}
+	    addConsoleLine(logMessage, "active");
 	});
 
-	eventSource.onerror = () => {
-		eventSource.close();
-		addConsoleLine("Progress stream disconnected.", "error");
-		elements.globalProgress.classList.add("hidden");
-	};
+    eventSource.addEventListener("progress", (event) => {
+        const data = JSON.parse(event.data);
+        const percent = data.percent || data.value || 0;
+        const message = data.message || "Processing...";
 
-	return eventSource;
+        updateProgressBar(percent, message);
+
+        if (message) {
+            addConsoleLine(message, "active");
+        }
+
+        // Close automatically if backend signals completion
+        if (percent >= 100 || data.status === "complete") {
+            eventSource.close();
+            addConsoleLine("Process completed successfully.", "success");
+            setTimeout(() => {
+                elements.globalProgress.classList.add("hidden");
+            }, 2000);
+        }
+    });
+	
+    eventSource.onerror = () => {
+        eventSource.close();
+        addConsoleLine("Progress stream disconnected.", "error");
+        elements.globalProgress.classList.add("hidden");
+    };
+
+    return eventSource;
 }
 
 function updateProgressBar(percent, message) {

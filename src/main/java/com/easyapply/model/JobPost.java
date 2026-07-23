@@ -10,14 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobPost {
-
-//	private String company;
-//	private String recruiter;
-//	private String experienceLevel;
-//	private String hiringManager;
-//	private String jobTitle;
-//	private List<String> skills;
-//	private List<String> emails;
 	
 	private String jobTitle;
     private String recruiterName;
@@ -26,5 +18,6 @@ public class JobPost {
     private List<String> requiredSkills;
     private List<String> location;
     private List<String> contactEmails;
+    private String originalPost;
 
 }

@@ -15,7 +15,7 @@ import com.easyapply.dto.MatchScoreResult;
 import com.easyapply.dto.ProgressUpdate;
 import com.easyapply.model.JobPost;
 import com.easyapply.model.ResumeProfile;
-import com.easyapply.reader.MailTemplateReader;
+import com.easyapply.reader.TemplateReader;
 import com.easyapply.service.JobMatchScorer;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class JobProcessorService {
 	private final ResumeProfileService resumeProfileService;
 	private final SentEmailLogService sentEmailLogService;
 	private final MailProperties mailProperties;
-	private final MailTemplateReader mailTemplateReader;
+	private final TemplateReader mailTemplateReader;
 	private final JobMatchScorer jobMatchScorer;
 	private final SseService sseService;
 	private final AiProperties aiProperties;
@@ -108,7 +108,7 @@ public class JobProcessorService {
 			return JobMatchResult.builder().job(job).matchPercentage(matchPercentage)
 					.matchedSkills(scoreResult.getMatchedSkills()).missingSkills(scoreResult.getMissingSkills())
 					.emailSubject(mailProperties.getSubject()).emailBody(mailTemplateReader.render(recipientName))
-					.build();
+					.originalPost(job.getOriginalPost()).build();
 
 		} catch (Exception e) {
 			log.warn("Failed to build match result: {}", e.getMessage(), e);

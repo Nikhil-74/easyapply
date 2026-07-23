@@ -37,7 +37,8 @@ public class LinkedInScraperService {
 	private static final String POST_SELECTOR = "div[role='listitem']";
 	private static final int MIN_POST_TEXT_LENGTH = 20;
 
-	private static final Pattern EMAIL_PATTERN = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}");
+	private static final Pattern EMAIL_PATTERN = Pattern
+			.compile("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b");
 	private static final Pattern AT_BRACKET_PATTERN = Pattern.compile("\\[at\\]", Pattern.CASE_INSENSITIVE);
 	private static final Pattern AT_PAREN_PATTERN = Pattern.compile("\\(at\\)", Pattern.CASE_INSENSITIVE);
 	private int processedIndex = 0;
@@ -146,7 +147,7 @@ public class LinkedInScraperService {
 		Set<String> emails = new LinkedHashSet<>();
 
 		post.findElements(By.cssSelector("a[href^='mailto:']")).stream().map(e -> e.getDomAttribute("href"))
-				.filter(Objects::nonNull).map(href -> href.replaceFirst("mailto:", "").split("\\?")[0])
+				.filter(Objects::nonNull).map(href -> href.replaceFirst("mailto:", "").split("\\?")[0].toLowerCase())
 				.forEach(emails::add);
 
 		String text = post.getDomProperty("textContent");
@@ -177,16 +178,20 @@ public class LinkedInScraperService {
 	}
 
 	private void expandPosts(WebDriver driver) {
-		String seeMoreSelector = "button[class*='see-more']";
-		driver.findElements(By.cssSelector(seeMoreSelector)).forEach(btn -> {
-			try {
-				if (btn.isDisplayed()) {
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
-					sleep(100);
-				}
-			} catch (Exception ignored) {
-				log.error(ignored.getMessage());
-			}
-		});
+		String clickSeeMoreScript = """
+				document.querySelectorAll('button').forEach(btn => {
+				    if (btn.innerText.trim().toLowerCase().includes('more')) {
+				        btn.click();
+				    }
+				});
+				""";
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript(clickSeeMoreScript);
+			// Give the DOM 200ms to expand the text before we try to read it
+			sleep(200);
+		} catch (Exception e) {
+			log.warn("Failed to expand 'see more' buttons: {}", e.getMessage());
+		}
 	}
 }

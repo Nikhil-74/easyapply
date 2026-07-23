@@ -41,7 +41,6 @@ public class SseService {
 		try {
 			currentEmitter.send(SseEmitter.event().name(eventName).data(payload));
 		} catch (Exception e) {
-			currentEmitter.completeWithError(e);
 			this.emitter = null;
 		}
 	}

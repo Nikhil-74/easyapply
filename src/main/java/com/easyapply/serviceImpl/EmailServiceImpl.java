@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.easyapply.config.MailProperties;
 import com.easyapply.config.UserProperties;
-import com.easyapply.reader.MailTemplateReader;
+import com.easyapply.reader.TemplateReader;
 import com.easyapply.reader.RecruiterListReader;
 import com.easyapply.service.EmailService;
 import com.easyapply.util.ResourcePathResolver;
@@ -36,7 +36,7 @@ public class EmailServiceImpl implements EmailService {
 	private final UserProperties userProperties;
 	private final MailProperties mailProperties;
 	private final RecruiterListReader recruiterListReader;
-	private final MailTemplateReader mailTemplateReader;
+	private final TemplateReader mailTemplateReader;
 	private final ResourcePathResolver resourcePathResolver;
 	private final SentEmailLogService sentEmailLogService;
 
@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
 			UserProperties userProperties,
 			MailProperties mailProperties,
 			RecruiterListReader recruiterListReader,
-			MailTemplateReader mailTemplateReader,
+			TemplateReader mailTemplateReader,
 			ResourcePathResolver resourcePathResolver,
 			SentEmailLogService sentEmailLogService) {
 		this.userProperties = userProperties;

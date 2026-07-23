@@ -5,45 +5,23 @@ import org.springframework.stereotype.Service;
 
 import com.easyapply.exception.JobExtractionException;
 import com.easyapply.model.JobPost;
+import com.easyapply.reader.TemplateReader;
 
 @Service
 public class AiExtractionService {
 
-	private static final String SYSTEM_PROMPT = """
-				You are a precise information extraction engine.
-			     Extract structured data from the LinkedIn hiring post provided by the user.
-
-			     STRICT REQUIREMENTS:
-			     - Do not invent or infer information. Use only information explicitly present.
-			     - If a value cannot be determined, use an empty string ("") or an empty array ([]).
-			     - Remove duplicate values from arrays.
-			     - Preserve original capitalization for titles and names.
-
-			     FIELD EXTRACTION RULES:
-			     - Job Title: The primary role being actively hired for. If multiple, pick the main one.
-			     - Company Name: The name of the company hiring.
-			     - Recruiter: Name and LinkedIn profile URL of the post author/hiring person.
-			     - Experience: Convert the required experience into a numeric range representing YEARS (e.g., "0" for fresher, "2-4", "5+"). Do not use text words. If months are specified, convert to decimals (e.g., "6 months" = "0.5").
-			     - Skills: Extract unique technical/professional skills. Ignore generic soft skills (like "team player", "good attitude") unless explicitly listed under a "Requirements" section.
-			     - Emails: Extract every valid email address, including those under 'Emails Found' sections.
-
-				Additional Rules:
-				- Preserve original capitalization where possible.
-				- Do not generate fields not present in the schema.
-				- If the content is not a hiring or job-related post, return the schema with empty values.
-				- Return exactly one JSON object.
-				- When multiple job roles are mentioned, select the primary role being actively hired.
-				- When multiple experience requirements are mentioned, extract the one associated with the selected job role.
-				- Do not include generic words such as "communication", "team player", or "good attitude" in requiredSkills unless explicitly listed as required skills.
-			""";
-
 	private final ChatClient chatClient;
+	private final TemplateReader promptTemplateReader;
 
-	public AiExtractionService(ChatClient.Builder builder) {
+	public AiExtractionService(ChatClient.Builder builder, TemplateReader promptTemplateReader) {
 		this.chatClient = builder.build();
+		this.promptTemplateReader = promptTemplateReader;
 	}
 
 	public JobPost extract(String postText) {
+		if(postText == null || postText.isBlank()) return (new JobPost());
+		
+		String SYSTEM_PROMPT = promptTemplateReader.getAiExtractionSystemPromptTemplate();
 
 		String userPrompt = """
 				Analyze the following LinkedIn hiring post and extract the requested fields.
@@ -56,6 +34,7 @@ public class AiExtractionService {
 
 		try {
 			JobPost job = chatClient.prompt().system(SYSTEM_PROMPT).user(userPrompt).call().entity(JobPost.class);
+			job.setOriginalPost(postText);
 			return job;
 		} catch (JobExtractionException ex) {
 			throw ex;

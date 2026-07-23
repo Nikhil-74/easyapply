@@ -569,57 +569,81 @@ function renderMatches() {
 }
 
 function createJobCard(match, rawOnly = false) {
-	const template = document.querySelector("#job-card-template");
-	const card = template.content.firstElementChild.cloneNode(true);
-	const job = match.job || {};
-	const percentage = Number(match.matchPercentage) || 0;
-	const title = job.jobTitle || "Untitled role";
-	const location = arrayText(job.location);
-	const contacts = arrayText(job.contactEmails);
-	const meta = joinPresent([
-		job.recruiterName,
-		job.experienceRequired,
-		location,
-		contacts ? `Contacts: ${contacts}` : ""
-	]).join(" • ");
+    const template = document.querySelector("#job-card-template");
+    const card = template.content.firstElementChild.cloneNode(true);
+    const job = match.job || {};
+    const percentage = Number(match.matchPercentage) || 0;
+    const title = job.jobTitle || "Untitled role";
+    const location = arrayText(job.location);
+    const meta = joinPresent([
+        job.recruiterName,
+        job.experienceRequired,
+        location
+    ]).join(" • ");
 
-	card.querySelector(".job-title").textContent = title;
-	card.querySelector(".job-meta").textContent = meta || "No extra details returned.";
+    card.querySelector(".job-title").textContent = title;
+    card.querySelector(".job-meta").textContent = meta || "No extra details returned.";
 
-	const badge = card.querySelector(".match-badge");
-	badge.textContent = rawOnly ? "Fetched" : `${percentage}%`;
-	badge.classList.toggle("review", !rawOnly && percentage < 70);
+    const badge = card.querySelector(".match-badge");
+    badge.textContent = rawOnly ? "Fetched" : `${percentage}%`;
+    badge.classList.toggle("review", !rawOnly && percentage < 70);
 
-	card.querySelector(".matched-skills").innerHTML = renderChips(match.matchedSkills || job.requiredSkills || [], rawOnly ? "" : "match");
-	card.querySelector(".missing-skills").innerHTML = renderChips(match.missingSkills || [], "missing") || "<span class=\"muted\">None listed</span>";
+    card.querySelector(".matched-skills").innerHTML = renderChips(match.matchedSkills || job.requiredSkills || [], rawOnly ? "" : "match");
+    card.querySelector(".missing-skills").innerHTML = renderChips(match.missingSkills || [], "missing") || "<span class=\"muted\">None listed</span>";
 
-	const details = card.querySelector(".email-preview");
-	if (rawOnly || (!match.emailSubject && !match.emailBody)) {
-		details.remove();
-	} else {
-		card.querySelector(".email-subject").textContent = match.emailSubject || "No subject returned.";
-		const bodyEditor = card.querySelector(".email-body-editor");
-		bodyEditor.value = match.emailBody || "";
-		bodyEditor.addEventListener("input", () => {
-			match.emailBody = bodyEditor.value;
-		});
-	}
+    const originalPostPreview = card.querySelector(".original-post-preview");
+    if (!job.originalPost) {
+        originalPostPreview.remove();
+    } else {
+        card.querySelector(".original-post-content").textContent = job.originalPost;
+    }
 
-	const deleteButton = card.querySelector(".delete-match");
-	if (rawOnly) {
-		deleteButton.remove();
-	} else {
-		deleteButton.classList.remove("hidden");
-		deleteButton.addEventListener("click", () => {
-			state.matches = state.matches.filter((item) => item.clientId !== match.clientId);
-			state.jobs = state.matches.map((item) => item.job).filter(Boolean);
-			renderMetrics();
-			renderMatches();
-			logActivity(`Removed ${title} from shortlisted jobs.`);
-		});
-	}
+    const details = card.querySelector(".email-preview");
+    if (rawOnly || (!match.emailSubject && !match.emailBody)) {
+        details.remove();
+    } else {
+        // --- NEW: Recipient Email Editor Logic ---
+        const recipientEditor = card.querySelector(".email-recipient-editor");
+        if (recipientEditor) {
+            recipientEditor.value = arrayText(job.contactEmails) || "";
+            recipientEditor.addEventListener("input", () => {
+                match.job.contactEmails = recipientEditor.value
+                    .split(",")
+                    .map(e => e.trim())
+                    .filter(Boolean);
+            });
+        }
 
-	return card;
+        // --- EXISTING: Subject Editor Logic ---
+        const subjectEditor = card.querySelector(".email-subject-editor");
+        subjectEditor.value = match.emailSubject || "";
+        subjectEditor.addEventListener("input", () => {
+            match.emailSubject = subjectEditor.value;
+        });
+
+        // --- EXISTING: Body Editor Logic ---
+        const bodyEditor = card.querySelector(".email-body-editor");
+        bodyEditor.value = match.emailBody || "";
+        bodyEditor.addEventListener("input", () => {
+            match.emailBody = bodyEditor.value;
+        });
+    }
+
+    const deleteButton = card.querySelector(".delete-match");
+    if (rawOnly) {
+        deleteButton.remove();
+    } else {
+        deleteButton.classList.remove("hidden");
+        deleteButton.addEventListener("click", () => {
+            state.matches = state.matches.filter((item) => item.clientId !== match.clientId);
+            state.jobs = state.matches.map((item) => item.job).filter(Boolean);
+            renderMetrics();
+            renderMatches();
+            logActivity(`Removed ${title} from shortlisted jobs.`);
+        });
+    }
+
+    return card;
 }
 
 function withMatchIds(matches) {

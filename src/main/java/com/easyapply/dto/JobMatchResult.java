@@ -21,4 +21,5 @@ public class JobMatchResult {
 	private List<String> missingSkills;
 	private String emailSubject;
 	private String emailBody;
+	private String originalPost;
 }
